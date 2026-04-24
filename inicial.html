@@ -3,28 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tela Inicial</title>
-   <link rel="stylesheet" href="css/styles_inicial.css">
-  
-   
+    <title>Simulador Campeonato</title>
+    <link rel="stylesheet" href="css/styles_inicial.css">
 </head>
-<body>
-    <div class="header">
-        
-        <h1>Bem-vindo ao Campeonato Brasileiro!</h1>
-        <p>simulador de partidas dinamicas</p>
 
-    <div class="container">
-        <h1>Campeonato brasileiro!</h1>
-        <p>Clique no botão abaixo para cadastrar os times</p>
-        <button class="btn-start" onclick="iniciar()">Iniciar</button>
-    </div>
+<body>
+    <header class="header">
+        <h1>SIMULADOR CAMPEONATO</h1>
+        <p>simulador de partidas dinâmicas</p>
+    </header>
+
+    <main class="main">
+        <div class="card">
+            <button class="btn" onclick="iniciar()">Começar Simulação</button>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="left">todos os direitos reservados ©</div>
+        <div class="right">
+            Devs: Bruno, Lucas, Joao<br>
+        </div>
+    </footer>
 
     <script>
         function iniciar() {
-            // Redireciona para a página de cadastro de times
-            window.location.href = 'front.html';
+            window.location.href = 'cadastro.html';
         }
     </script>
+
 </body>
 </html>
