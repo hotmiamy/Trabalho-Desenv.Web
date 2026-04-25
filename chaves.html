@@ -1,288 +1,70 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-  <meta charset="UTF-8" />
-  <title>Chaves de Futebol</title>
-
-  <style>
-
-    /* ───────────────────────────────────────
-       GERAL
-    ─────────────────────────────────────── */
-
-    body {
-      background-color: #0d1117;  /* cor de fundo da página */
-      font-family: Arial, sans-serif;
-      color: white;
-      padding: 40px;
-    }
-
-    h1 {
-      text-align: center;
-      color: #f0c040;
-      margin-bottom: 40px;
-    }
-
-
-    /* ───────────────────────────────────────
-       BRACKET  →  o container principal
-       usa flex para colocar as fases
-       uma do lado da outra
-    ─────────────────────────────────────── */
-
-    .bracket {
-      display: flex;          /* coloca os filhos em linha */
-      align-items: center;    /* centraliza verticalmente */
-      gap: 0;                 /* sem espaço entre colunas (as linhas cuidam disso) */
-    }
-
-
-    /* ───────────────────────────────────────
-       FASE  →  coluna de cada rodada
-       (oitavas, quartas, semi, final)
-    ─────────────────────────────────────── */
-
-    .fase {
-      display: flex;           /* coloca os jogos em coluna */
-      flex-direction: column;
-      align-items: center;
-    }
-
-    /* título acima de cada fase */
-    .fase h3 {
-      font-size: 12px;
-      color: #888;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      margin-bottom: 16px;
-      white-space: nowrap;
-    }
-
-    /* os jogos dentro da fase ficam espaçados */
-    .fase .jogos {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;               /* espaço entre os jogos */
-    }
-
-    /* oitavas: 8 jogos → espaço pequeno */
-    .oitavas .jogos { gap: 12px; }
-
-    /* quartas: 4 jogos → espaço maior */
-    .quartas .jogos { gap: 91px; }
-
-    /* semi: 2 jogos → espaço ainda maior */
-    .semi .jogos    { gap: 272px; }
-
-
-    /* ───────────────────────────────────────
-       JOGO  →  par de times
-    ─────────────────────────────────────── */
-
-    .jogo {
-      display: flex;
-      flex-direction: column;
-      gap: 3px;               /* espaço entre os dois times */
-    }
-
-
-    /* ───────────────────────────────────────
-       TIME  →  cada caixinha de time
-    ─────────────────────────────────────── */
-
-    .time {
-      width: 150px;
-      height: 38px;
-      background-color: #161b22;   /* fundo do slot */
-      border: 1px solid #30363d;   /* borda fina */
-      border-radius: 6px;          /* cantos arredondados */
-      padding: 0 12px;
-      display: flex;
-      align-items: center;         /* texto centralizado verticalmente */
-      font-size: 13px;
-    }
-
-    /* efeito ao passar o mouse */
-    .time:hover {
-      background-color: #1f2937;
-      border-color: #4ade80;
-    }
-
-    /* slot ainda vazio */
-    .time.vazio {
-      color: #444;
-      font-style: italic;
-    }
-
-
-    /* ───────────────────────────────────────
-       LINHA CONECTORA  →  a setinha entre fases
-       fica entre cada fase no HTML
-    ─────────────────────────────────────── */
-
-    .conector {
-      width: 30px;                  /* largura da linha */
-      height: 2px;
-      background-color: #30a46c;   /* cor verde */
-      align-self: center;           /* fica no meio vertical */
-    }
-
-
-    /* ───────────────────────────────────────
-       FINAL  →  destaque especial
-    ─────────────────────────────────────── */
-
-    .final .time {
-      background-color: #1c1400;
-      border-color: #f0c040;
-      color: #f0c040;
-      font-weight: bold;
-      font-size: 15px;
-    }
-
-    /* troféu ao lado da final */
-    .trofeu {
-      font-size: 36px;
-      margin-left: 16px;
-    }
-
-  </style>
+  <meta charset="UTF-8">
+  <title>Bracket Futebol</title>
+  <link rel="stylesheet" href="css/styles_chaves.css">
 </head>
+
 <body>
+  <main class="container">
+    <!-- GRID -->
+    <div class="bracket">
 
-  <h1>⚽ Chaves do Torneio</h1>
+      <!-- Quartas -->
+      <div class="match q1">
+        <div class="team">Time A</div>
+        <div class="team">Time B</div>
+      </div>
+      <div class="match q2">
+        <div class="team">Time C</div>
+        <div class="team">Time D</div>
+      </div>
+      <div class="match q3">
+        <div class="team">Time E</div>
+        <div class="team">Time F</div>
+      </div>
+      <div class="match q4">
+        <div class="team">Time G</div>
+        <div class="team">Time H</div>
+      </div>
 
-  <!--
-    ESTRUTURA:
-    .bracket
-      .fase.oitavas
-        .jogos
-          .jogo
-            .time
-            .time
-      .conector
-      .fase.quartas
-        ...
-  -->
-
-  <div class="bracket">
-
-    <!-- ═══ OITAVAS DE FINAL ═══ -->
-    <div class="fase oitavas">
-      <h3>Oitavas de Final</h3>
-      <div class="jogos">
-
-        <div class="jogo">
-          <div class="time">Flamengo</div>
-          <div class="time">Vila Nova</div>
-        </div>
-
-        <div class="jogo">
-          <div class="time">Santos</div>
-          <div class="time">Ceará</div>
-        </div>
-
-        <div class="jogo">
-          <div class="time">Fluminense</div>
-          <div class="time">Goiás</div>
-        </div>
-
-        <div class="jogo">
-          <div class="time">Palmeiras</div>
-          <div class="time">Cuiabá</div>
-        </div>
-
-        <div class="jogo">
-          <div class="time">Atlético-MG</div>
-          <div class="time">Botafogo-PB</div>
-        </div>
-
-        <div class="jogo">
-          <div class="time">Grêmio</div>
-          <div class="time">Sport</div>
-        </div>
-
-        <div class="jogo">
-          <div class="time">Corinthians</div>
-          <div class="time">Fortaleza</div>
-        </div>
-
-        <div class="jogo">
-          <div class="time">São Paulo</div>
-          <div class="time">Criciúma</div>
-        </div>
-
+        <!-- Semis -->
+      <div class="match s1">
+        <div class="team">Time G</div>
+        <div class="team">Time H</div>
+      </div>
+      <div class="match s2">
+        <div class="team">Time G</div>
+        <div class="team">Time H</div>
+      </div>
+    
+        <!-- Final -->
+      <div class="match f1">
+        <div class="team">Time G</div>
+        <div class="team">Time H</div>
       </div>
     </div>
 
-    <div class="conector"></div>
+      <!-- SVG (LINHAS) -->
+      <svg class="lines">
 
-    <!-- ═══ QUARTAS DE FINAL ═══ -->
-    <div class="fase quartas">
-      <h3>Quartas de Final</h3>
-      <div class="jogos">
-
-        <div class="jogo">
-          <div class="time vazio">vencedor</div>
-          <div class="time vazio">vencedor</div>
-        </div>
-
-        <div class="jogo">
-          <div class="time vazio">vencedor</div>
-          <div class="time vazio">vencedor</div>
-        </div>
-
-        <div class="jogo">
-          <div class="time vazio">vencedor</div>
-          <div class="time vazio">vencedor</div>
-        </div>
-
-        <div class="jogo">
-          <div class="time vazio">vencedor</div>
-          <div class="time vazio">vencedor</div>
-        </div>
-
-      </div>
-    </div>
-
-    <div class="conector"></div>
-
-    <!-- ═══ SEMIFINAL ═══ -->
-    <div class="fase semi">
-      <h3>Semifinal</h3>
-      <div class="jogos">
-
-        <div class="jogo">
-          <div class="time vazio">vencedor</div>
-          <div class="time vazio">vencedor</div>
-        </div>
-
-        <div class="jogo">
-          <div class="time vazio">vencedor</div>
-          <div class="time vazio">vencedor</div>
-        </div>
-
-      </div>
-    </div>
-
-    <div class="conector"></div>
-
-    <!-- ═══ FINAL ═══ -->
-    <div class="fase final">
-      <h3>Final</h3>
-      <div class="jogos">
-
-        <div class="jogo">
-          <div class="time vazio">finalista</div>
-          <div class="time vazio">finalista</div>
-        </div>
-
-      </div>
-    </div>
-
-    <div class="trofeu">🏆</div>
-
-  </div>
-
+          <!-- Q1 + Q2 -> S1 -->
+          <line x1="260" y1="60"  x2="360" y2="120" stroke="white" stroke-width="2"/>
+          <line x1="260" y1="240" x2="360" y2="120" stroke="white" stroke-width="2"/>
+      
+          <!-- Q3 + Q4 -> S2 -->
+          <line x1="260" y1="450" x2="320" y2="540" stroke="white" stroke-width="2"/>
+          <line x1="260" y1="650" x2="320" y2="540" stroke="white" stroke-width="2"/>
+      
+          <!-- S1 + S2 -> Final -->
+          <line x1="580" y1="140" x2="660" y2="340" stroke="white" stroke-width="2"/>
+          <line x1="580" y1="540" x2="660" y2="340" stroke="white" stroke-width="2"/>
+      
+      </svg>
+    
+  </main>
 </body>
+
 </html>
