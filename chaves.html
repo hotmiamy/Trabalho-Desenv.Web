@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chaves de Futebol</title>
+  <style>
+    /* ── Variáveis ── */
+    :root {
+      --time-h: 38px;       /* altura de cada slot de time */
+      --time-w: 155px;      /* largura do slot */
+      --match-gap: 3px;     /* espaço entre os dois times do mesmo jogo */
+      --match-h: calc(var(--time-h) * 2 + var(--match-gap)); /* 79px */
+      --r1-gap: 12px;       /* espaço entre jogos na fase 1 */
+      --conn: 30px;         /* largura da linha conectora */
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      background: #0d1117;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      font-family: 'Segoe UI', sans-serif;
+      color: #e6edf3;
+    }
+
+    h1 {
+      font-size: 1.3rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #f0c040;
+      margin-bottom: 48px;
+    }
+
+    /* ════════════════════════════════════════
+       ESTRUTURA DO BRACKET
+       .bracket → linha horizontal
+         .round  → coluna de cada fase
+           .match  → jogo (2 times)
+             .time   → slot de time
+    ════════════════════════════════════════ */
+
+    .bracket {
+      display: flex;
+      align-items: center;
+    }
+
+    /* ── Cada fase é uma coluna ── */
+    .round {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /*
+      Espaço entre jogos dobra a cada fase:
+      R1 → --r1-gap
+      R2 → --match-h + --r1-gap   (encaixa no centro dos dois jogos anteriores)
+      R3 → 3×--match-h + 2×--r1-gap
+    */
+    .round-1 { gap: var(--r1-gap); }
+    .round-2 { gap: calc(var(--match-h) + var(--r1-gap)); }
+    .round-3 { gap: calc(var(--match-h) * 3 + var(--r1-gap) * 2); }
+
+    /* ── Jogo: contém 2 times ── */
+    .match {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: var(--match-gap);
+    }
+
+    /* Linha horizontal saindo do centro do jogo para a direita */
+    .match::after {
+      content: '';
+      position: absolute;
+      right: calc(-1 * var(--conn));
+      top: 50%;
+      width: var(--conn);
+      border-top: 2px solid #30a46c;
+    }
+
+    /* Não desenha linha no último jogo de cada fase (vai para a fase seguinte) */
+    .round-3 .match::after { display: none; }
+
+    /*
+      Linha vertical conectando dois jogos:
+      apenas o jogo ÍMPAR (1º de cada par) desenha a barra vertical para baixo.
+      Altura = --match-h + gap da fase (= distância entre os centros dos dois jogos do par)
+    */
+    .round-1 .match:nth-child(odd)::before {
+      content: '';
+      position: absolute;
+      right: calc(-1 * var(--conn));
+      top: 50%;
+      height: calc(var(--match-h) + var(--r1-gap));
+      border-right: 2px solid #30a46c;
+    }
+
+    .round-2 .match:nth-child(odd)::before {
+      content: '';
+      position: absolute;
+      right: calc(-1 * var(--conn));
+      top: 50%;
+      height: calc(var(--match-h) * 2 + var(--r1-gap));
+      border-right: 2px solid #30a46c;
+    }
+
+    /* ── Slot de time ── */
+    .time {
+      width: var(--time-w);
+      height: var(--time-h);
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      font-size: 0.82rem;
+      gap: 8px;
+      transition: background 0.15s;
+    }
+
+    .time:hover { background: #1f2937; }
+
+    /* Número de seed */
+    .seed {
+      font-size: 0.65rem;
+      color: #484f58;
+      min-width: 14px;
+      text-align: right;
+    }
+
+    .nome { flex: 1; }
+
+    /* Slot vazio */
+    .time.vazio .nome {
+      color: #484f58;
+      font-style: italic;
+    }
+
+    /* ── Fase Final ── */
+    .round-final .match::after { display: none; }
+    .round-final .time {
+      width: var(--time-w);
+      height: var(--time-h);
+      background: #1c1400;
+      border: 1px solid #f0c040;
+      color: #f0c040;
+      font-weight: bold;
+      font-size: 0.88rem;
+    }
+
+    /* ── Troféu ── */
+    .trofeu {
+      font-size: 2.4rem;
+      margin-left: 12px;
+      align-self: center;
+    }
+
+    /* ── Títulos das fases ── */
+    .bracket-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+
+    .fases-titulos {
+      display: flex;
+      gap: 0;
+      margin-bottom: 12px;
+      align-items: flex-end;
+    }
+
+    .fase-titulo {
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #484f58;
+      text-align: center;
+    }
+
+    /* largura = time-w + conn */
+    .titulo-r1  { width: calc(var(--time-w) + var(--conn)); }
+    .titulo-r2  { width: calc(var(--time-w) + var(--conn)); }
+    .titulo-r3  { width: calc(var(--time-w) + var(--conn)); }
+    .titulo-fin { width: calc(var(--time-w) + 50px); }
+  </style>
+</head>
+<body>
+
+  <h1>⚽ Chaves do Torneio</h1>
+
+  <div class="bracket-wrapper">
+
+    <!-- Títulos das fases -->
+    <div class="fases-titulos">
+      <div class="fase-titulo titulo-r1">Oitavas de Final</div>
+      <div class="fase-titulo titulo-r2">Quartas de Final</div>
+      <div class="fase-titulo titulo-r3">Semifinal</div>
+      <div class="fase-titulo titulo-fin">Final</div>
+    </div>
+
+    <!-- Bracket -->
+    <div class="bracket">
+
+      <!-- ── Oitavas de Final (8 jogos, 16 times) ── -->
+      <div class="round round-1">
+
+        <div class="match">
+          <div class="time"><span class="seed">1</span><span class="nome">Flamengo</span></div>
+          <div class="time"><span class="seed">16</span><span class="nome">Vila Nova</span></div>
+        </div>
+
+        <div class="match">
+          <div class="time"><span class="seed">8</span><span class="nome">Santos</span></div>
+          <div class="time"><span class="seed">9</span><span class="nome">Ceará</span></div>
+        </div>
+
+        <div class="match">
+          <div class="time"><span class="seed">5</span><span class="nome">Fluminense</span></div>
+          <div class="time"><span class="seed">12</span><span class="nome">Goiás</span></div>
+        </div>
+
+        <div class="match">
+          <div class="time"><span class="seed">4</span><span class="nome">Palmeiras</span></div>
+          <div class="time"><span class="seed">13</span><span class="nome">Cuiabá</span></div>
+        </div>
+
+        <div class="match">
+          <div class="time"><span class="seed">3</span><span class="nome">Atlético-MG</span></div>
+          <div class="time"><span class="seed">14</span><span class="nome">Botafogo-PB</span></div>
+        </div>
+
+        <div class="match">
+          <div class="time"><span class="seed">6</span><span class="nome">Grêmio</span></div>
+          <div class="time"><span class="seed">11</span><span class="nome">Sport</span></div>
+        </div>
+
+        <div class="match">
+          <div class="time"><span class="seed">7</span><span class="nome">Corinthians</span></div>
+          <div class="time"><span class="seed">10</span><span class="nome">Fortaleza</span></div>
+        </div>
+
+        <div class="match">
+          <div class="time"><span class="seed">2</span><span class="nome">São Paulo</span></div>
+          <div class="time"><span class="seed">15</span><span class="nome">Criciúma</span></div>
+        </div>
+
+      </div>
+
+      <!-- ── Quartas de Final (4 jogos, slots vazios) ── -->
+      <div class="round round-2">
+        <div class="match">
+          <div class="time vazio"><span class="seed">–</span><span class="nome">vencedor</span></div>
+          <div class="time vazio"><span class="seed">–</span><span class="nome">vencedor</span></div>
+        </div>
+        <div class="match">
+          <div class="time vazio"><span class="seed">–</span><span class="nome">vencedor</span></div>
+          <div class="time vazio"><span class="seed">–</span><span class="nome">vencedor</span></div>
+        </div>
+        <div class="match">
+          <div class="time vazio"><span class="seed">–</span><span class="nome">vencedor</span></div>
+          <div class="time vazio"><span class="seed">–</span><span class="nome">vencedor</span></div>
+        </div>
+        <div class="match">
+          <div class="time vazio"><span class="seed">–</span><span class="nome">vencedor</span></div>
+          <div class="time vazio"><span class="seed">–</span><span class="nome">vencedor</span></div>
+        </div>
+      </div>
+
+      <!-- ── Semifinal (2 jogos) ── -->
+      <div class="round round-3">
+        <div class="match">
+          <div class="time vazio"><span class="seed">–</span><span class="nome">vencedor</span></div>
+          <div class="time vazio"><span class="seed">–</span><span class="nome">vencedor</span></div>
+        </div>
+        <div class="match">
+          <div class="time vazio"><span class="seed">–</span><span class="nome">vencedor</span></div>
+          <div class="time vazio"><span class="seed">–</span><span class="nome">vencedor</span></div>
+        </div>
+      </div>
+
+      <!-- ── Final ── -->
+      <div class="round round-final">
+        <div class="match">
+          <div class="time vazio"><span class="seed">–</span><span class="nome">finalista</span></div>
+          <div class="time vazio"><span class="seed">–</span><span class="nome">finalista</span></div>
+        </div>
+      </div>
+
+      <!-- Troféu -->
+      <div class="trofeu">🏆</div>
+
+    </div>
+  </div>
+
+</body>
+</html>
