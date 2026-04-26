@@ -3,31 +3,59 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Bracket Futebol</title>
+  <title>Simulador de campeonato</title>
   <link rel="stylesheet" href="css/styles_chaves.css">
 </head>
 
 <body>
-  <main class="container">
+  <header class="header">
+    <h1>Simulador de campeonato</h1>
+    <p>Primeiro antes de começar por-favor selecione no campo das quartas de final os times ha serem simulados</p>
+  </header>
+  <main class="main">
     <!-- GRID -->
     <div class="bracket">
 
       <!-- Quartas -->
       <div class="match q1">
-        <div class="team">Time A</div>
-        <div class="team">Time B</div>
+        <div class="team-selector">
+          <div class="team-selected">Time A</div>
+          <div class="dropdown"></div>
+        </div>
+        <div class="team-selector">
+        <div class="team-selected">Time B</div>
+        <div class="dropdown"></div>
+        </div>
       </div>
       <div class="match q2">
-        <div class="team">Time C</div>
-        <div class="team">Time D</div>
+        <div class="team-selector">
+          <div class="team-selected">Time C</div>
+          <div class="dropdown"></div>
+        </div>
+        <div class="team-selector">
+          <div class="team-selected">Time D</div>
+          <div class="dropdown"></div>
+        </div>
       </div>
       <div class="match q3">
-        <div class="team">Time E</div>
-        <div class="team">Time F</div>
+        <div class="team-selector">
+          <div class="team-selected">Time E</div>
+          <div class="dropdown"></div>
+        </div>
+        <div class="team-selector">
+          <div class="team-selected">Time F</div>
+          <div class="dropdown"></div>
+        </div>
       </div>
       <div class="match q4">
-        <div class="team">Time G</div>
-        <div class="team">Time H</div>
+        <div class="team-selector">
+          <div class="team-selected">Time G</div>
+          <div class="dropdown"></div>
+        </div>
+        <div class="team-selector">
+          <div class="team-selected">Time H</div>
+          <div class="dropdown"></div>
+        </div>
       </div>
 
         <!-- Semis -->
@@ -51,20 +79,52 @@
       <svg class="lines">
 
           <!-- Q1 + Q2 -> S1 -->
-          <line x1="260" y1="60"  x2="360" y2="120" stroke="white" stroke-width="2"/>
-          <line x1="260" y1="240" x2="360" y2="120" stroke="white" stroke-width="2"/>
+          <line x1="410" y1="80"  x2="440" y2="190" stroke="green" stroke-width="2"/>
+          <line x1="410" y1="300" x2="440" y2="190" stroke="green" stroke-width="2"/>
       
           <!-- Q3 + Q4 -> S2 -->
-          <line x1="260" y1="450" x2="320" y2="540" stroke="white" stroke-width="2"/>
-          <line x1="260" y1="650" x2="320" y2="540" stroke="white" stroke-width="2"/>
+          <line x1="410" y1="515" x2="440" y2="620" stroke="green" stroke-width="2"/>
+          <line x1="410" y1="735" x2="440" y2="620" stroke="green" stroke-width="2"/>
       
           <!-- S1 + S2 -> Final -->
-          <line x1="580" y1="140" x2="660" y2="340" stroke="white" stroke-width="2"/>
-          <line x1="580" y1="540" x2="660" y2="340" stroke="white" stroke-width="2"/>
+          <line x1="800" y1="190" x2="835" y2="410" stroke="green" stroke-width="2"/>
+          <line x1="800" y1="625" x2="835" y2="410" stroke="green" stroke-width="2"/>
       
       </svg>
     
   </main>
+
+  <footer class="footer">
+    <div class="left">todos os direitos reservados ©</div>
+    <div class="right">
+        Devs: Bruno<br> Lucas <br> Joao<br>
+    </div>
+  </footer>
+
+  <script>
+    document.querySelectorAll(".team-selector").forEach(selector => {
+        const selected = selector.querySelector(".team-selected");
+        const dropdown = selector.querySelector(".dropdown");
+
+        selected.addEventListener("click", (e) => {
+            e.stopPropagation();
+
+            document.querySelectorAll(".dropdown").forEach(d => {
+                if (d !== dropdown) d.style.display = "none";
+            });
+
+            dropdown.style.display =
+                dropdown.style.display === "block" ? "none" : "block";
+        });
+    });
+
+    document.addEventListener("click", () => {
+        document.querySelectorAll(".dropdown").forEach(d => {
+            d.style.display = "none";
+        });
+    });
+  </script>
+
 </body>
 
 </html>
