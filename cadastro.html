@@ -13,5 +13,53 @@
     <div class="card">
       <h1>Brasileirão 2026</h1>
       <h3>Cadastrar times</h3>
+      <input type="text" id="teamInput" placeholder="Digite o nome do time">
+  <button onclick="addTeam()">Adicionar</button>
 
+  <table>
+    <thead>
+      <tr>
+        <th>Time</th>
+        <th>Ação</th>
+      </tr>
+    </thead>
+    <tbody id="teamTable">
+    </tbody>
+  </table>
+</div>
+<script>
+  function addTeam() {
+    const input = document.getElementById("teamInput");
+    const teamName = input.value.trim();
+
+    if (teamName === "") {
+      alert("Digite um nome válido!");
+      return;
+    }
+
+    const table = document.getElementById("teamTable");
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+      <td>${teamName}</td>
+      <td><span class="delete-btn" onclick="deleteTeam(this)">Excluir</span></td>
+    `;
+
+    table.appendChild(row);
+    input.value = "";
+  }
+
+  function deleteTeam(element) {
+    const row = element.parentElement.parentElement;
+    row.remove();
+  }
+</script>
+
+<footer class="footer">
+    <div class="left">todos os direitos reservados ©</div>
+    <div class="right">
+        Devs: Bruno<br> Lucas <br> Joao<br>
+    </div>
+  </footer>
    
+  
