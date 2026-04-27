@@ -3,31 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <title>Painel de Partidas</title>
-  <link  rel="stylesheet" href="css/styles_cadastro.css">
+  <link rel="stylesheet" href="css/styles_cadastro.css">
 </head>
 
 <body>
-  <header>Painel Administrativo ⚽</header>
 
-  <div class="container">
-    <div class="card">
-      <h1>Brasileirão 2026</h1>
-      <h3>Cadastrar times</h3>
-      <input type="text" id="teamInput" placeholder="Digite o nome do time">
-  <button onclick="addTeam()">Adicionar</button>
+<header>CADASTRE AQUI SEUS TIMES ⚽</header>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Time</th>
-        <th>Ação</th>
-      </tr>
-    </thead>
-    <tbody id="teamTable">
-    </tbody>
-  </table>
+<div class="container">
+  <div class="card">
+
+    <h1>Brasileirão 2026</h1>
+    <h3>Cadastrar times</h3>
+
+    <input type="text" id="teamInput" placeholder="Digite o nome do time">
+    <button onclick="addTeam()">Adicionar</button>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Time</th>
+          <th>Ação</th>
+        </tr>
+      </thead>
+      <tbody id="teamTable"></tbody>
+    </table>
+
+    <button class="btn" onclick="goNext()">Próxima página</button>
+
+  </div>
 </div>
+
 <script>
+  let editingRow = null;
+
   function addTeam() {
     const input = document.getElementById("teamInput");
     const teamName = input.value.trim();
@@ -38,28 +47,52 @@
     }
 
     const table = document.getElementById("teamTable");
-    const row = document.createElement("tr");
 
-    row.innerHTML = `
-      <td>${teamName}</td>
-      <td><span class="delete-btn" onclick="deleteTeam(this)">Excluir</span></td>
-    `;
+    if (editingRow) {
+      editingRow.querySelector(".team-name").innerText = teamName;
+      editingRow = null;
+    } else {
+      const row = document.createElement("tr");
 
-    table.appendChild(row);
+      row.innerHTML = `
+        <td class="team-name">${teamName}</td>
+        <td>
+          <span class="edit-btn" onclick="editTeam(this)">Editar</span> |
+          <span class="delete-btn" onclick="deleteTeam(this)">Excluir</span>
+        </td>
+      `;
+
+      table.appendChild(row);
+    }
+
     input.value = "";
   }
 
   function deleteTeam(element) {
     const row = element.parentElement.parentElement;
-    row.remove();
+  }
+
+  function editTeam(element) {
+    const row = element.parentElement.parentElement;
+    const name = row.querySelector(".team-name").innerText;
+
+    document.getElementById("teamInput").value = name;
+    editingRow = row;
+  }
+
+  function goNext() {
+    window.location.href = "chaves.html";
   }
 </script>
 
 <footer class="footer">
-    <div class="left">todos os direitos reservados ©</div>
-    <div class="right">
-        Devs: Bruno<br> Lucas <br> Joao<br>
-    </div>
-  </footer>
-   
-  
+  <div class="left">Todos os direitos reservados ©</div>
+  <div class="right">
+    Devs: Bruno<br>
+    Lucas<br>
+    João<br>
+  </div>
+</footer>
+
+</body>
+</html>
