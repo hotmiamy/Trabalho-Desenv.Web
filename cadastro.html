@@ -8,91 +8,76 @@
 
 <body>
 
-<header>CADASTRE AQUI SEUS TIMES ⚽</header>
+  <main class="app">
 
-<div class="container">
-  <div class="card">
+    <header class="header">
+      <h1 class="title">
+        BRASILEIRÃO SIMULATOR ⚽
+      </h1>
+    </header>
 
-    <h1>Brasileirão 2026</h1>
-    <h3>Cadastrar times</h3>
+    <section class="card register-card">
 
-    <input type="text" id="teamInput" placeholder="Digite o nome do time">
-    <button onclick="addTeam()">Adicionar</button>
+      <h2 class="section-title">
+        Cadastro de Times
+      </h2>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Time</th>
-          <th>Ação</th>
-        </tr>
-      </thead>
-      <tbody id="teamTable"></tbody>
-    </table>
+      <form id="team-form" class="register-form">
 
-    <button class="btn" onclick="goNext()">Próxima página</button>
+        <input
+          id="team-input"
+          name="team"
+          class="input"
+          type="text"
+          placeholder="Digite nome do time"
+        >
 
-  </div>
-</div>
+        <button type="submit" class="button button--primary">
+          Salvar
+        </button>
 
-<script>
-  let editingRow = null;
+      </form>
 
-  function addTeam() {
-    const input = document.getElementById("teamInput");
-    const teamName = input.value.trim();
+    </section>
 
-    if (teamName === "") {
-      alert("Digite um nome válido!");
-      return;
-    }
+    <section class="card table-card">
 
-    const table = document.getElementById("teamTable");
+      <table class="teams-table">
 
-    if (editingRow) {
-      editingRow.querySelector(".team-name").innerText = teamName;
-      editingRow = null;
-    } else {
-      const row = document.createElement("tr");
+        <thead>
+            <tr>
+              <th>Times</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
 
-      row.innerHTML = `
-        <td class="team-name">${teamName}</td>
-        <td>
-          <span class="edit-btn" onclick="editTeam(this)">Editar</span> |
-          <span class="delete-btn" onclick="deleteTeam(this)">Excluir</span>
-        </td>
-      `;
+          <tbody id="teamTable">
+          </tbody>
+      </table>
 
-      table.appendChild(row);
-    }
+    </section>
 
-    input.value = "";
-  }
+    <div class="page-actions">
+      <button id="nextButton" class="button button--primary">
+        Ir para página de Simulação
+      </button>
+    </div>
 
-  function deleteTeam(element) {
-    const row = element.parentElement.parentElement;
-  }
+    <footer class="footer">
 
-  function editTeam(element) {
-    const row = element.parentElement.parentElement;
-    const name = row.querySelector(".team-name").innerText;
+      <div>
+        Todos os direitos reservados ©
+      </div>
 
-    document.getElementById("teamInput").value = name;
-    editingRow = row;
-  }
+      <div>
+        Devs: Bruno, Lucas e João
+      </div>
 
-  function goNext() {
-    window.location.href = "chaves.html";
-  }
-</script>
+    </footer>
 
-<footer class="footer">
-  <div class="left">Todos os direitos reservados ©</div>
-  <div class="right">
-    Devs: Bruno<br>
-    Lucas<br>
-    João<br>
-  </div>
-</footer>
+  </main>
+
+  <script src="js/cadastro.js"></script>
 
 </body>
 </html>

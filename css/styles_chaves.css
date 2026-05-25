@@ -50,7 +50,7 @@ body {
 /* GRID */
 .bracket {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-template-rows: repeat(8, 1fr);
     gap: 20px;
 }
@@ -135,4 +135,61 @@ body {
     min-height: 100px;
     border: 1px solid rgb(21, 255, 0);
     z-index: 10;
+}
+
+.button-start{
+    grid-column: 4;  
+    grid-row: 8;
+
+    border: none;
+
+    padding: 12px 18px;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    font-weight: bold;
+
+    background: #1e6b3a;
+}
+
+.button-start:disabled {
+
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.notwinner{
+    grid-column: 4;  
+    grid-row: 4;
+
+    color: white;
+    background: #2ecc71;
+}
+
+.winner {
+    grid-column: 4;
+    grid-row: 4;
+    background: #2ecc71;
+    color: white;
+    font-weight: bold;
+    animation: pulse 1s infinite;
+}
+
+
+
+@keyframes pulse {
+
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }
