@@ -6,32 +6,29 @@ header("Content-Type: application/json");
 
 $data = readJsonInput();
 
-$teams = readTeams();
-
-if (empty($teams)){
-
-    $newTeam = [
-    "id" => 0,
-    "name" => $data["name"]
-];
-
-} else {
-
-    $lastTeam = end($teams);
-    $newTeam = [
-    "id" => $lastTeam["id"] + 1,
-    "name" => $data["name"]
-];
-
+// Validar se o nome foi enviado
+if (!isset($data["name"]) || empty($data["name"])) {
+    jsonResponse([
+        "success" => false,
+        "error" => "Nome é obrigatório"
+    ]);
+    exit;
 }
 
-
-
-$teams[] = $newTeam;
-
-saveTeams($teams);
-
-jsonResponse([
-    "success" => true,
-    "team" => $newTeam
-]);
+try {
+    // Criar o novo time no banco
+    $newId = createTeamInDB($data["name"]);
+    
+    jsonResponse([
+        "success" => true,
+        "team" => [
+            "id" => $newId,
+            "name" => $data["name"]
+        ]
+    ]);
+} catch (Exception $e) {
+    jsonResponse([
+        "success" => false,
+        "error" => "Erro ao criar time: " . $e->getMessage()
+    ]);
+}

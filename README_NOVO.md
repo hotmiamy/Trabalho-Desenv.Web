@@ -96,9 +96,9 @@ DB_USER=seu_usuario_postgres
 DB_PASSWORD=sua_senha
 ```
 
-### 4️⃣ Criar o banco de dados no PostgreSQL
+### 4️⃣ Criar banco de dados e tabela
 
-Entre no PostgreSQL como administrador:
+Entre no PostgreSQL:
 
 ```bash
 sudo -i -u postgres psql
@@ -110,17 +110,30 @@ Dentro do PostgreSQL, execute:
 -- Criar o banco de dados
 CREATE DATABASE projeto_times;
 
+-- Conectar ao banco
+\c projeto_times
+
+-- Tabela de times
+CREATE TABLE times (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100),
+    vitorias INT,
+    derrotas INT,  
+    gols_marcados INT,
+    gols_sofridos INT
+);
+
 -- Criar usuário (se não existir)
 CREATE USER seu_usuario_postgres WITH PASSWORD 'sua_senha';
 
 -- Dar permissões
 GRANT ALL PRIVILEGES ON DATABASE projeto_times TO seu_usuario_postgres;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO seu_usuario_postgres;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO seu_usuario_postgres;
 
 -- Sair
 \q
 ```
-
-**⚠️ IMPORTANTE:** Crie o banco antes de acessar a aplicação. As tabelas serão criadas automaticamente!
 
 ---
 
@@ -146,8 +159,6 @@ Acesse: **http://localhost:8000**
 
 A página inicial vai carregar automaticamente! 🎉
 
-**Primeira vez?** As tabelas do banco serão criadas automaticamente na primeira requisição! ✨
-
 ### 3️⃣ Testar as funcionalidades
 
 1. Clique em **"ir para cadastro dos times"**
@@ -167,9 +178,7 @@ Trabalho-Desenv.Web/
 ├── .env                 # Variáveis de ambiente (NÃO fazer commit!)
 ├── .env.example         # Template de .env (para compartilhar)
 ├── .gitignore          # Arquivos ignorados pelo Git
-├── index.php           # Redireciona para init.php
-├── init.php            # Cria as tabelas automaticamente ✨
-├── setup.sql           # Setup manual (OPCIONAL)
+├── index.php           # Redireciona para inicial.html
 ├── inicial.html        # Página inicial
 ├── cadastro.html       # Página de cadastro de times
 ├── chaves.html         # Página de gerenciamento de chaves
@@ -181,7 +190,7 @@ Trabalho-Desenv.Web/
 │   └── deleta_json.php      # DELETE - Deletar time
 │
 ├── includes/           # Arquivos incluídos
-│   ├── config.php           # Conexão com PostgreSQL (usa .env)
+│   ├── config.php           # Conexão com PostgreSQL
 │   └── functions.php        # Funções SQL do backend
 │
 ├── css/                # Estilos
@@ -193,38 +202,16 @@ Trabalho-Desenv.Web/
 │   ├── cadastro.js          # Lógica de cadastro
 │   └── chaves.js           # Lógica de chaves
 │
-└── banco de dados/     # Schema SQL
-    └── schema.sql           # Estrutura das tabelas (documentação)
+├── banco de dados/     # Schema SQL
+│   └── schema.sql           # Estrutura das tabelas
+│
+└── data/               # Dados (removido, agora usa BD)
+    └── times.json          # (não é mais usado)
 ```
 
 ---
 
-## � Arquivos Especiais
-
-### `init.php` - Inicialização Automática ✨
-
-Este arquivo é executado na primeira vez que você acessa `http://localhost:8000`. Ele:
-- Verifica se a tabela `times` existe
-- Se não existir, **cria automaticamente**
-- Redireciona para `inicial.html`
-
-**Você não precisa fazer nada!** Apenas acesse a URL e as tabelas serão criadas. 🎉
-
-### `setup.sql` - Setup Manual (OPCIONAL)
-
-Se preferir criar as tabelas manualmente via terminal, use este arquivo:
-
-```bash
-# Conectar ao PostgreSQL
-sudo -i -u postgres psql
-
-# Dentro do PostgreSQL, execute:
-\i /caminho/para/setup.sql
-```
-
-Este arquivo é **totalmente opcional** - as tabelas são criadas automaticamente pelo `init.php`.
-
----
+## 🔗 API Endpoints
 
 Todos os endpoints retornam JSON e estão em `api/`:
 
@@ -335,14 +322,6 @@ sudo service postgresql start
 ```bash
 # Verifique as permissões do usuário no .env
 # Execute novamente os GRANT no PostgreSQL
-```
-
-**Erro ao criar tabelas automaticamente (init.php)**
-```bash
-# Se o init.php falhar, use o setup.sql manualmente:
-sudo -i -u postgres psql -d projeto_times
-# Dentro do PostgreSQL:
-\i /caminho/para/setup.sql
 ```
 
 ---

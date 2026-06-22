@@ -6,19 +6,33 @@ header("Content-Type: application/json");
 
 $data = readJsonInput();
 
-$teams = readTeams();
+// Validar se ID foi enviado
+if (!isset($data["id"])) {
+    jsonResponse([
+        "success" => false,
+        "error" => "ID é obrigatório"
+    ]);
+    exit;
+}
 
-$id = $data["id"];
-
-$filteredTeams = array_filter(
-    $teams,
-    function($team) use ($id) {
-        return $team["id"] != $id;
+try {
+    // Deletar o time do banco
+    $deleted = deleteTeamInDB($data["id"]);
+    
+    if ($deleted) {
+        jsonResponse([
+            "success" => true,
+            "message" => "Time deletado com sucesso"
+        ]);
+    } else {
+        jsonResponse([
+            "success" => false,
+            "error" => "Nenhum time encontrado com esse ID"
+        ]);
     }
-);
-
-saveTeams(array_values($filteredTeams));
-
-jsonResponse([
-    "success" => true
-]);
+} catch (Exception $e) {
+    jsonResponse([
+        "success" => false,
+        "error" => "Erro ao deletar time: " . $e->getMessage()
+    ]);
+}

@@ -1,24 +1,17 @@
 async function addTeam(event)
 {
-    const maxTeamresponse = await fetch("api/listar_json.php");
-
-    const teams = await maxTeamresponse.json();
-
-    if (teams.length >= 8){
-        alert("Número máximo de times");
-        return ;
-    }
-    
+    console.log("🔵 addTeam chamado");
     event.preventDefault();
-
+    
     const input = document.getElementById("team-input");
-
     const teamName = input.value.trim();
 
     if (teamName === "") {
       alert("Digite um nome válido!");
       return;
     }
+
+    console.log("📝 Criando time:", teamName);
 
     const response = await fetch("api/criar_json.php", 
     {
@@ -32,12 +25,13 @@ async function addTeam(event)
     });
 
     const data = await response.json();
-
-    console.log(data);
+    console.log("✅ Resposta da API:", data);
 
     input.value = "";
 
-    loadTeams();
+    console.log("🔄 Recarregando times...");
+    await loadTeams();
+    console.log("✅ Times recarregados!");
 }
 
 async function loadTeams() {
